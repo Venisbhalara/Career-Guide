@@ -1,0 +1,23 @@
+meta {
+  name: Get Skill Gap
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/recommendations/skill-gap/:careerId
+  body: none
+  auth: inherit
+}
+
+params:path {
+  careerId: 1
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

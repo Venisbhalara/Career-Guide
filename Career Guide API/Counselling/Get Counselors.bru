@@ -1,0 +1,15 @@
+meta {
+  name: Get Counselors
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/counselling/counselors
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Get User Sessions
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/counselling/sessions
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

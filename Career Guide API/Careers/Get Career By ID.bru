@@ -1,0 +1,19 @@
+meta {
+  name: Get Career By ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/careers/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+settings {
+  encodeUrl: true
+}

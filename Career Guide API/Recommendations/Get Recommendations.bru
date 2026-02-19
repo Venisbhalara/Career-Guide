@@ -1,0 +1,19 @@
+meta {
+  name: Get Recommendations
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/recommendations
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

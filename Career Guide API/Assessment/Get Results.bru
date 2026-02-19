@@ -1,0 +1,19 @@
+meta {
+  name: Get Results
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/assessment/results
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

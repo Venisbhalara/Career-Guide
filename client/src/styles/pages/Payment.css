@@ -1,0 +1,413 @@
+/* Payment Page Styles - Light Luxury & Classy */
+
+/* Soft Animated Background */
+.payment-page {
+  padding-top: 80px;
+  min-height: 100vh;
+  /* Soft, elegant light gradient: Porcelain, White, Soft Cloud */
+  background: linear-gradient(-45deg, #fdfbfb, #ebedee, #f3e7e9, #e3eeff);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  color: #2d3748; /* Dark grey for text, not harsh black */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-bottom: 4rem;
+  font-family: "Inter", sans-serif;
+  overflow-x: hidden;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.payment-container {
+  width: 100%;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 3rem;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Glassmorphism Card (Light Version) */
+.payment-methods-container {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04); /* Soft shadow */
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.payment-header {
+  margin-bottom: 3rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* very subtle divider */
+  padding-bottom: 1.5rem;
+}
+
+.payment-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1a202c;
+  letter-spacing: -0.5px;
+}
+
+.payment-subtitle {
+  color: #718096;
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+
+/* Tabs */
+.payment-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  padding: 0.4rem;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 16px;
+  width: fit-content;
+}
+
+.payment-tab {
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  color: #718096;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.payment-tab.active {
+  background: #fff;
+  color: #2d3748;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.payment-tab:hover:not(.active) {
+  color: #4a5568;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* UPI Section */
+.upi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.upi-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 120px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.01);
+}
+
+.upi-option:hover {
+  transform: translateY(-5px);
+  border-color: rgba(99, 102, 241, 0.3);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.06);
+}
+
+.upi-option.selected {
+  background: #f8fafc;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+}
+
+.upi-icon {
+  width: 45px;
+  height: 45px;
+  margin-bottom: 0.8rem;
+  object-fit: contain;
+}
+
+/* Credit Card Visual - Sophisticated Look */
+.card-visual {
+  width: 100%;
+  max-width: 380px;
+  height: 220px;
+  /* Elegant gradient: Midnight City or similar deep but smooth tone */
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border-radius: 20px;
+  margin-bottom: 2.5rem;
+  padding: 2rem;
+  color: rgba(255, 255, 255, 0.9);
+  position: relative;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  transition: transform 0.6s;
+  overflow: hidden;
+}
+
+/* Subtle overlay pattern */
+.card-visual::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 100% 0%,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.card-visual-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.chip {
+  width: 45px;
+  height: 32px;
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.card-brand {
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.card-number-display {
+  font-size: 1.5rem;
+  letter-spacing: 3px;
+  font-family: "Courier Prime", monospace;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.label {
+  font-size: 0.6rem;
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+.value {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Form Styles - Clean & Minimal */
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  color: #2d3748;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.form-input::placeholder {
+  color: #a0aec0;
+}
+
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #6366f1;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.05);
+}
+
+.form-label {
+  color: #4a5568;
+  margin-bottom: 0.5rem;
+  display: block;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Pay Button - Elegant & Understated */
+.btn-pay {
+  background: #1a202c; /* Strong dark button for contrast on light theme */
+  color: white;
+  width: 100%;
+  padding: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 14px;
+  margin-top: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-pay:hover {
+  background: #2d3748;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Order Summary - Floating Card */
+.order-summary {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 24px;
+  padding: 2.5rem;
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+}
+
+.summary-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.summary-title {
+  color: #1a202c;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.summary-subtitle {
+  color: #718096;
+}
+
+.plan-details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  color: #4a5568;
+}
+
+.plan-name {
+  color: #1a202c;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.plan-price {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.summary-total {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-label {
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.total-amount {
+  font-size: 2rem;
+  font-weight: 800;
+  /* Deep rich gradient for text */
+  background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.secure-badge {
+  color: #718096;
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+/* Loading Spinner */
+.spinner {
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .payment-container {
+    grid-template-columns: 1fr;
+  }
+  .order-summary {
+    position: static;
+    order: -1;
+  }
+}

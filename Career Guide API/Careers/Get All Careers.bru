@@ -1,0 +1,15 @@
+meta {
+  name: Get All Careers
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/careers
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,38 @@
+register done 
+login done 
+get me done 
+
+
+get profile done 
+update profile done 
+
+
+get careers done
+get all fields done 
+get career by id done 
+
+
+get questions done
+submit assessment done 
+get results done 
+
+get recommendations done 
+get skill gap pending 
+
+
+get all courses done
+get courses by career 
+
+
+get counselors done
+get available slots done
+book sessions done 
+get user sessions done 
+
+
+get analytics admin only 
+add career admin only
+
+get contact done 
+ 
+ 

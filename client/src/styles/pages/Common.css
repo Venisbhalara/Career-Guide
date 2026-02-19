@@ -1,0 +1,36 @@
+/* Common Page Styles - For placeholder pages */
+
+.page-container {
+  padding-top: 100px;
+  min-height: 100vh;
+  background-color: var(--color-bg-secondary);
+}
+
+.page-content {
+  padding: var(--space-12) 0;
+}
+
+.page-placeholder {
+  text-align: center;
+  padding: var(--space-20);
+  background-color: var(--color-bg-tertiary);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-md);
+}
+
+.page-placeholder h1 {
+  font-size: var(--text-4xl);
+  margin-bottom: var(--space-4);
+}
+
+.page-placeholder p {
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  margin: 0 auto var(--space-6);
+}
+
+.page-icon {
+  font-size: 80px;
+  margin-bottom: var(--space-6);
+}
