@@ -1,0 +1,434 @@
+/* AdminCounselling.css — Minimalist, premium */
+
+/* ── Status Stats ─────────────────────────────────────── */
+.counselling-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.counselling-stat {
+  background: #fff;
+  border: 1px solid #ebebf0;
+  border-radius: 14px;
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  cursor: pointer;
+  transition:
+    box-shadow 0.18s,
+    border-color 0.18s;
+}
+
+.counselling-stat:hover,
+.counselling-stat.active-filter {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.counselling-stat.active-filter {
+  border-color: var(--color-primary, #4f46e5);
+}
+
+.cstat-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cstat-dot.pending {
+  background: #f59e0b;
+}
+.cstat-dot.confirmed {
+  background: #3b82f6;
+}
+.cstat-dot.completed {
+  background: #10b981;
+}
+.cstat-dot.cancelled {
+  background: #ef4444;
+}
+
+.cstat-val {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.cstat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #8b90a0;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+/* ── Toolbar ──────────────────────────────────────────── */
+.counselling-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.counselling-toolbar .admin-search-wrap {
+  flex: 1;
+  min-width: 200px;
+}
+
+.session-count-badge {
+  margin-left: auto;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #8b90a0;
+  background: #f3f3fb;
+  padding: 0.4rem 0.85rem;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+/* ── Sessions Table ───────────────────────────────────── */
+.counselling-table-wrap {
+  background: #fff;
+  border: 1px solid #ebebf0;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.counselling-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.counselling-table thead tr {
+  background: #fafafa;
+  border-bottom: 1px solid #ebebf0;
+}
+
+.counselling-table th {
+  padding: 0.85rem 1.1rem;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8b90a0;
+  white-space: nowrap;
+}
+
+.counselling-table tbody tr {
+  border-bottom: 1px solid #f4f4f8;
+  transition: background 0.15s;
+}
+
+.counselling-table tbody tr:last-child {
+  border-bottom: none;
+}
+.counselling-table tbody tr:hover {
+  background: #fafafe;
+}
+
+.counselling-table td {
+  padding: 0.9rem 1.1rem;
+  color: #3a3a52;
+  vertical-align: middle;
+}
+
+/* Status badge */
+.session-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: capitalize;
+  padding: 0.25rem 0.65rem;
+  border-radius: 100px;
+}
+
+.session-status-badge.pending {
+  background: #fef3c7;
+  color: #d97706;
+}
+.session-status-badge.confirmed {
+  background: #dbeafe;
+  color: #2563eb;
+}
+.session-status-badge.completed {
+  background: #dcfce7;
+  color: #16a34a;
+}
+.session-status-badge.cancelled {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.session-status-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.session-status-badge.pending .dot {
+  background: #f59e0b;
+}
+.session-status-badge.confirmed .dot {
+  background: #3b82f6;
+}
+.session-status-badge.completed .dot {
+  background: #10b981;
+}
+.session-status-badge.cancelled .dot {
+  background: #ef4444;
+}
+
+/* Quick status select */
+.status-select-inline {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid #e4e4ee;
+  background: #fafafa;
+  color: #3a3a52;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.status-select-inline:focus {
+  border-color: var(--color-primary, #4f46e5);
+}
+
+/* Table actions */
+.session-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.session-edit-btn,
+.session-delete-btn {
+  padding: 0.38rem 0.72rem;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.session-edit-btn {
+  background: #f3f3fb;
+  color: var(--color-primary, #4f46e5);
+  border-color: #e0dff5;
+}
+
+.session-edit-btn:hover {
+  background: #ebe8ff;
+}
+
+.session-delete-btn {
+  background: #fff5f5;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.session-delete-btn:hover {
+  background: #fee2e2;
+}
+
+/* User cell */
+.session-user-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.session-user-name {
+  font-weight: 600;
+  color: #1a1a2e;
+  font-size: 0.875rem;
+}
+
+.session-user-email {
+  font-size: 0.73rem;
+  color: #8b90a0;
+}
+
+/* Date-time cell */
+.session-datetime {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.session-date {
+  font-weight: 600;
+  color: #1a1a2e;
+  font-size: 0.85rem;
+}
+.session-time {
+  font-size: 0.75rem;
+  color: #8b90a0;
+}
+
+/* Meeting link chip */
+.meeting-link-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  text-decoration: none;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meeting-none {
+  font-size: 0.75rem;
+  color: #c0c4cc;
+}
+
+/* ── Empty & Skeleton ──────────────────────────────────── */
+.counselling-empty {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  color: #b0b4be;
+}
+
+.counselling-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+.counselling-empty p {
+  font-size: 0.875rem;
+}
+
+/* ── Pagination (reuse) ────────────────────────────────── */
+.counselling-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #f0f0f5;
+  background: #fafafa;
+}
+
+/* ── Edit Session Modal ────────────────────────────────── */
+.session-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 15, 35, 0.4);
+  backdrop-filter: blur(6px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: adminFadeUp 0.2s ease;
+}
+
+.session-modal {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.14);
+}
+
+.session-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid #f0f0f5;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+  border-radius: 20px 20px 0 0;
+}
+
+.session-modal-header h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.session-modal-body {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+/* Info block inside modal */
+.session-info-box {
+  background: #f7f7fc;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  font-size: 0.85rem;
+  color: #3a3a52;
+  line-height: 1.6;
+  border: 1px solid #ebebf0;
+}
+
+.session-info-box strong {
+  color: #1a1a2e;
+}
+
+.session-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.25rem 1.75rem;
+  border-top: 1px solid #f0f0f5;
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  border-radius: 0 0 20px 20px;
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 900px) {
+  .counselling-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .counselling-table th:nth-child(4),
+  .counselling-table td:nth-child(4),
+  .counselling-table th:nth-child(6),
+  .counselling-table td:nth-child(6) {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .counselling-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+  .counselling-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

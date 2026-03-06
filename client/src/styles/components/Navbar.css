@@ -212,6 +212,27 @@
   margin: var(--space-2) 0;
 }
 
+/* Admin Panel item — distinct look */
+.dropdown-item-admin {
+  background: linear-gradient(135deg, #eeecff 0%, #f3eeff 100%) !important;
+  color: var(--color-primary, #4f46e5) !important;
+  font-weight: 600 !important;
+  border-radius: var(--radius-md);
+  margin-top: var(--space-1);
+}
+
+.dropdown-item-admin:hover {
+  background: linear-gradient(135deg, #e0ddff 0%, #ece5ff 100%) !important;
+  color: #3730a3 !important;
+}
+
+.mobile-nav-link-admin {
+  color: var(--color-primary, #4f46e5) !important;
+  font-weight: 600;
+  background: linear-gradient(135deg, #eeecff 0%, #f3eeff 100%);
+  border-radius: var(--radius-md);
+}
+
 /* Mobile Menu Button */
 .mobile-menu-btn {
   display: none;

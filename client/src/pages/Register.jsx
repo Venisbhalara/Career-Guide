@@ -30,8 +30,8 @@ const Register = () => {
     const result = await register(formData);
 
     if (result.success) {
-      console.log("Registration successful, navigating to profile setup");
-      navigate("/profile-setup");
+      console.log("Registration successful, navigating to dashboard");
+      navigate("/dashboard");
     } else {
       console.error("Registration failed:", result.error);
       setError(result.error || "Registration failed. Please try again.");

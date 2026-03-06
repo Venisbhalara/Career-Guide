@@ -1,0 +1,832 @@
+{
+  "info": {
+    "_postman_id": "career-guide-api-collection",
+    "name": "Career Guide API",
+    "description": "Complete API collection for Career Guide application. Base URL: http://localhost:3000\n\n## Setup\n1. Run the collection — **Register** or **Login** first.\n2. The Login/Register requests have a **Tests** script that auto-saves the token to the `authToken` collection variable.\n3. All protected routes use `{{authToken}}` automatically via the collection-level Authorization header.\n4. Admin routes also require the logged-in user to have `is_admin = true`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl",   "value": "http://localhost:3000",  "type": "string" },
+    { "key": "authToken", "value": "",                       "type": "string" },
+    { "key": "careerId",  "value": "1",                      "type": "string" },
+    { "key": "sessionId", "value": "1",                      "type": "string" },
+    { "key": "userId",    "value": "2",                      "type": "string" },
+    { "key": "questionId","value": "1",                      "type": "string" },
+    { "key": "messageId", "value": "1",                      "type": "string" },
+    { "key": "subscriptionId","value": "1",                   "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] },
+            "description": "Check if the server is running."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const res = pm.response.json();",
+                  "  if (res.token) pm.collectionVariables.set('authToken', res.token);",
+                  "  console.log('Token saved:', res.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Test User\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password123\",\n  \"phone\": \"9876543210\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] },
+            "description": "Register a new user. Token is auto-saved to `authToken` variable."
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const res = pm.response.json();",
+                  "  if (res.token) pm.collectionVariables.set('authToken', res.token);",
+                  "  console.log('Token saved:', res.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] },
+            "description": "Login and get JWT token. Token is auto-saved to `authToken` variable."
+          }
+        },
+        {
+          "name": "Get Me (Current User)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/auth/me", "host": ["{{baseUrl}}"], "path": ["api", "auth", "me"] },
+            "description": "Get currently authenticated user details. Requires Bearer token."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/users/profile", "host": ["{{baseUrl}}"], "path": ["api", "users", "profile"] },
+            "description": "Get the logged-in user's profile."
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Updated Name\",\n  \"phone\": \"9123456789\",\n  \"date_of_birth\": \"2000-05-15\",\n  \"gender\": \"male\",\n  \"education_level\": \"bachelor\",\n  \"current_status\": \"student\",\n  \"interests\": \"technology, design, entrepreneurship\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/users/profile", "host": ["{{baseUrl}}"], "path": ["api", "users", "profile"] },
+            "description": "Update the logged-in user's profile. Sending `education_level`, `current_status`, and `interests` together marks `profile_completed = true`."
+          }
+        },
+        {
+          "name": "Get Saved Careers",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/users/saved-careers", "host": ["{{baseUrl}}"], "path": ["api", "users", "saved-careers"] },
+            "description": "Get user's saved careers. Note: Currently returns 503 — feature disabled."
+          }
+        },
+        {
+          "name": "Toggle Save Career",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/users/save-career/{{careerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "save-career", "{{careerId}}"]
+            },
+            "description": "Save or unsave a career. Note: Currently returns 503 — feature disabled."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Careers",
+      "item": [
+        {
+          "name": "Get All Careers",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/careers?page=1&limit=10&search=&field=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "careers"],
+              "query": [
+                { "key": "page",   "value": "1" },
+                { "key": "limit",  "value": "10" },
+                { "key": "search", "value": "" },
+                { "key": "field",  "value": "" }
+              ]
+            },
+            "description": "Get all careers with optional pagination and filters."
+          }
+        },
+        {
+          "name": "Get All Career Fields",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/careers/fields/all", "host": ["{{baseUrl}}"], "path": ["api", "careers", "fields", "all"] },
+            "description": "Get a list of all distinct career fields."
+          }
+        },
+        {
+          "name": "Get Careers by Field",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/careers/field/Technology",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "careers", "field", "Technology"]
+            },
+            "description": "Get all careers in a specific field. Replace `Technology` with your desired field."
+          }
+        },
+        {
+          "name": "Get Career by ID",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/careers/{{careerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "careers", "{{careerId}}"]
+            },
+            "description": "Get a single career by its ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Assessment",
+      "item": [
+        {
+          "name": "Get Assessment Questions",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/assessment/questions?type=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "assessment", "questions"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "",
+                  "description": "Optional filter: interest | personality | aptitude"
+                }
+              ]
+            },
+            "description": "Get all assessment questions. Optional `type` query param: `interest`, `personality`, or `aptitude`."
+          }
+        },
+        {
+          "name": "Submit Assessment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": [\n    { \"question_id\": 1, \"answer\": \"A\" },\n    { \"question_id\": 2, \"answer\": \"B\" },\n    { \"question_id\": 3, \"answer\": \"C\" },\n    { \"question_id\": 4, \"answer\": \"A\" },\n    { \"question_id\": 5, \"answer\": \"D\" }\n  ]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/assessment/submit", "host": ["{{baseUrl}}"], "path": ["api", "assessment", "submit"] },
+            "description": "Submit assessment answers. Each item must have `question_id` and `answer` (matching an option key)."
+          }
+        },
+        {
+          "name": "Get Assessment Results",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/assessment/results", "host": ["{{baseUrl}}"], "path": ["api", "assessment", "results"] },
+            "description": "Get the current user's assessment results. Requires completing the assessment first."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recommendations",
+      "item": [
+        {
+          "name": "Get Recommendations",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/recommendations", "host": ["{{baseUrl}}"], "path": ["api", "recommendations"] },
+            "description": "Get AI career recommendations based on completed assessment."
+          }
+        },
+        {
+          "name": "Get Skill Gap for Career",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/recommendations/skill-gap/{{careerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "recommendations", "skill-gap", "{{careerId}}"]
+            },
+            "description": "Get the skill gap analysis for a specific career based on the user's assessment."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "item": [
+        {
+          "name": "Get All Courses",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/courses", "host": ["{{baseUrl}}"], "path": ["api", "courses"] },
+            "description": "Get all available courses."
+          }
+        },
+        {
+          "name": "Get Courses by Career",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/courses/career/{{careerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "courses", "career", "{{careerId}}"]
+            },
+            "description": "Get courses recommended for a specific career."
+          }
+        },
+        {
+          "name": "Get Courses by Skill",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/courses/skill/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "courses", "skill", "1"]
+            },
+            "description": "Get courses for a specific skill ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Counselling",
+      "item": [
+        {
+          "name": "Get All Counselors",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/counselling/counselors", "host": ["{{baseUrl}}"], "path": ["api", "counselling", "counselors"] },
+            "description": "Get list of all available counselors (public)."
+          }
+        },
+        {
+          "name": "Get Available Slots",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/counselling/available-slots?date=2026-03-10&counselorId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "counselling", "available-slots"],
+              "query": [
+                { "key": "date",        "value": "2026-03-10", "description": "Required — format: YYYY-MM-DD" },
+                { "key": "counselorId", "value": "1",          "description": "Optional — counselor ID" }
+              ]
+            },
+            "description": "Get available time slots for a date. `date` is required (YYYY-MM-DD format)."
+          }
+        },
+        {
+          "name": "Book Session",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"session_date\": \"2026-03-10\",\n  \"session_time\": \"10:00\",\n  \"counsellor_name\": \"Dr. Priya Sharma\",\n  \"notes\": \"I need guidance on switching from IT to product management.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/counselling/book", "host": ["{{baseUrl}}"], "path": ["api", "counselling", "book"] },
+            "description": "Book a counselling session. The response includes the new `session_id` — update `{{sessionId}}` variable."
+          }
+        },
+        {
+          "name": "Get My Sessions",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/counselling/sessions?status=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "counselling", "sessions"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Optional: pending | confirmed | completed | cancelled"
+                }
+              ]
+            },
+            "description": "Get all counselling sessions for the logged-in user."
+          }
+        },
+        {
+          "name": "Cancel Session",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/counselling/cancel/{{sessionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "counselling", "cancel", "{{sessionId}}"]
+            },
+            "description": "Cancel a session by ID. Only the session owner can cancel."
+          }
+        },
+        {
+          "name": "Reschedule Session",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"session_date\": \"2026-03-15\",\n  \"session_time\": \"14:00\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/counselling/reschedule/{{sessionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "counselling", "reschedule", "{{sessionId}}"]
+            },
+            "description": "Reschedule an existing session to a new date and time."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "item": [
+        {
+          "name": "Submit Contact Form",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Venis Bhalara\",\n  \"email\": \"venis@example.com\",\n  \"subject\": \"Career Guidance Inquiry\",\n  \"message\": \"I would like to know more about available career counselling services.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/contact", "host": ["{{baseUrl}}"], "path": ["api", "contact"] },
+            "description": "Submit a contact/support message (public — no auth required)."
+          }
+        },
+        {
+          "name": "Get All Contacts (Admin)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/contact", "host": ["{{baseUrl}}"], "path": ["api", "contact"] },
+            "description": "Get all submitted contact messages."
+          }
+        },
+        {
+          "name": "Update Contact Status",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"read\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/contact/{{messageId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contact", "{{messageId}}"]
+            },
+            "description": "Update the status of a contact message. Valid values: `new`, `read`, `replied`."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "description": "All admin routes require a valid JWT token from an admin user (`is_admin = true`).",
+      "item": [
+        {
+          "name": "Analytics",
+          "item": [
+            {
+              "name": "Get Analytics",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{baseUrl}}/api/admin/analytics", "host": ["{{baseUrl}}"], "path": ["api", "admin", "analytics"] },
+                "description": "Get platform-wide analytics: total users, careers, assessments, sessions."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Career Management",
+          "item": [
+            {
+              "name": "Get All Careers (Admin)",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/careers?page=1&limit=12&search=&field=",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "careers"],
+                  "query": [
+                    { "key": "page",   "value": "1" },
+                    { "key": "limit",  "value": "12" },
+                    { "key": "search", "value": "" },
+                    { "key": "field",  "value": "" }
+                  ]
+                },
+                "description": "Get all careers with pagination and search (admin view)."
+              }
+            },
+            {
+              "name": "Get Career by ID (Admin)",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/careers/{{careerId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "careers", "{{careerId}}"]
+                },
+                "description": "Get full career details including all fields for editing."
+              }
+            },
+            {
+              "name": "Add Career",
+              "request": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Full Stack Developer\",\n  \"field\": \"Technology\",\n  \"description\": \"Build both frontend and backend of web applications.\",\n  \"detailed_description\": \"Full stack developers work on all layers of a web application including databases, servers, APIs, and user interfaces.\",\n  \"avg_salary_min\": 600000,\n  \"avg_salary_max\": 1800000,\n  \"education_required\": \"Bachelor's in Computer Science or equivalent\",\n  \"roadmap\": [\n    { \"step\": 1, \"title\": \"Learn HTML/CSS/JS\", \"duration\": \"2 months\" },\n    { \"step\": 2, \"title\": \"Learn React\", \"duration\": \"2 months\" },\n    { \"step\": 3, \"title\": \"Learn Node.js & Express\", \"duration\": \"2 months\" },\n    { \"step\": 4, \"title\": \"Build Projects & Apply\", \"duration\": \"ongoing\" }\n  ]\n}"
+                },
+                "url": { "raw": "{{baseUrl}}/api/admin/careers", "host": ["{{baseUrl}}"], "path": ["api", "admin", "careers"] },
+                "description": "Add a new career to the platform."
+              }
+            },
+            {
+              "name": "Update Career",
+              "request": {
+                "method": "PUT",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Senior Full Stack Developer\",\n  \"avg_salary_min\": 900000,\n  \"avg_salary_max\": 2500000,\n  \"description\": \"Updated description for senior full stack role.\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/careers/{{careerId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "careers", "{{careerId}}"]
+                },
+                "description": "Update any fields of an existing career. Only send fields you want to update."
+              }
+            },
+            {
+              "name": "Delete Career",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/careers/{{careerId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "careers", "{{careerId}}"]
+                },
+                "description": "Permanently delete a career by ID."
+              }
+            }
+          ]
+        },
+        {
+          "name": "User Management",
+          "item": [
+            {
+              "name": "Get All Users",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/users?page=1&limit=20&search=&role=all",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "users"],
+                  "query": [
+                    { "key": "page",   "value": "1" },
+                    { "key": "limit",  "value": "20" },
+                    { "key": "search", "value": "" },
+                    { "key": "role",   "value": "all", "description": "all | admin | user" }
+                  ]
+                },
+                "description": "Get all users with search, role filter, and pagination."
+              }
+            },
+            {
+              "name": "Toggle Admin Role",
+              "request": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/users/{{userId}}/toggle-admin",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "users", "{{userId}}", "toggle-admin"]
+                },
+                "description": "Promote or demote a user's admin role. Cannot demote yourself."
+              }
+            },
+            {
+              "name": "Delete User",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/users/{{userId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "users", "{{userId}}"]
+                },
+                "description": "Permanently delete a user account. Cannot delete your own account."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Assessment Management",
+          "item": [
+            {
+              "name": "Get All Questions (Admin)",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/assessments?type=",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "assessments"],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "",
+                      "description": "Optional: interest | personality | aptitude"
+                    }
+                  ]
+                },
+                "description": "Get all assessment questions with stats. Optional `type` filter."
+              }
+            },
+            {
+              "name": "Add Question",
+              "request": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"question_text\": \"Do you enjoy solving complex logical problems?\",\n  \"question_type\": \"aptitude\",\n  \"category\": \"logical-reasoning\",\n  \"options\": [\n    { \"key\": \"A\", \"text\": \"Strongly Agree\" },\n    { \"key\": \"B\", \"text\": \"Agree\" },\n    { \"key\": \"C\", \"text\": \"Neutral\" },\n    { \"key\": \"D\", \"text\": \"Disagree\" }\n  ],\n  \"scoring_weights\": {\n    \"A\": 4,\n    \"B\": 3,\n    \"C\": 2,\n    \"D\": 1\n  }\n}"
+                },
+                "url": { "raw": "{{baseUrl}}/api/admin/assessments", "host": ["{{baseUrl}}"], "path": ["api", "admin", "assessments"] },
+                "description": "Add a new assessment question. `question_text` and `question_type` are required."
+              }
+            },
+            {
+              "name": "Update Question",
+              "request": {
+                "method": "PUT",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"question_text\": \"Updated: Do you enjoy solving complex problems?\",\n  \"question_type\": \"aptitude\",\n  \"category\": \"logical-reasoning\",\n  \"options\": [\n    { \"key\": \"A\", \"text\": \"Strongly Agree\" },\n    { \"key\": \"B\", \"text\": \"Agree\" },\n    { \"key\": \"C\", \"text\": \"Disagree\" },\n    { \"key\": \"D\", \"text\": \"Strongly Disagree\" }\n  ],\n  \"scoring_weights\": {\n    \"A\": 5,\n    \"B\": 3,\n    \"C\": 2,\n    \"D\": 0\n  }\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/assessments/{{questionId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "assessments", "{{questionId}}"]
+                },
+                "description": "Update all fields of an assessment question."
+              }
+            },
+            {
+              "name": "Delete Question",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/assessments/{{questionId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "assessments", "{{questionId}}"]
+                },
+                "description": "Permanently delete an assessment question."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Session Management (Admin)",
+          "item": [
+            {
+              "name": "Get All Sessions (Admin)",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/counselling?page=1&limit=15&status=&search=",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "counselling"],
+                  "query": [
+                    { "key": "page",   "value": "1" },
+                    { "key": "limit",  "value": "15" },
+                    { "key": "status", "value": "", "description": "pending | confirmed | completed | cancelled" },
+                    { "key": "search", "value": "", "description": "Search by user name, email, or counsellor" }
+                  ]
+                },
+                "description": "Get all counselling sessions across all users."
+              }
+            },
+            {
+              "name": "Update Session (Admin)",
+              "request": {
+                "method": "PUT",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"confirmed\",\n  \"counsellor_name\": \"Dr. Priya Sharma\",\n  \"meeting_link\": \"https://meet.google.com/abc-defg-hij\",\n  \"notes\": \"Please join 5 minutes early.\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/counselling/{{sessionId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "counselling", "{{sessionId}}"]
+                },
+                "description": "Update session status, counsellor, meeting link, or notes. Valid statuses: `pending`, `confirmed`, `completed`, `cancelled`."
+              }
+            },
+            {
+              "name": "Delete Session (Admin)",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/counselling/{{sessionId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "counselling", "{{sessionId}}"]
+                },
+                "description": "Permanently delete a counselling session."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Subscription Management (Admin)",
+          "item": [
+            {
+              "name": "Get All Subscriptions",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/subscriptions?page=1&limit=15&plan=&status=&search=",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "subscriptions"],
+                  "query": [
+                    { "key": "page",   "value": "1" },
+                    { "key": "limit",  "value": "15" },
+                    { "key": "plan",   "value": "", "description": "free | basic | premium | enterprise" },
+                    { "key": "status", "value": "", "description": "active | expired | cancelled" },
+                    { "key": "search", "value": "" }
+                  ]
+                },
+                "description": "Get all subscriptions with plan counts, status counts, and revenue summary."
+              }
+            },
+            {
+              "name": "Update Subscription",
+              "request": {
+                "method": "PUT",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"plan_type\": \"premium\",\n  \"status\": \"active\",\n  \"end_date\": \"2027-01-01\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/subscriptions/{{subscriptionId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "subscriptions", "{{subscriptionId}}"]
+                },
+                "description": "Update subscription plan, status, or end date. Plans: `free`, `basic`, `premium`, `enterprise`."
+              }
+            },
+            {
+              "name": "Delete Subscription",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/subscriptions/{{subscriptionId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "subscriptions", "{{subscriptionId}}"]
+                },
+                "description": "Permanently delete a subscription record."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Messages Management (Admin)",
+          "item": [
+            {
+              "name": "Get All Messages",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/messages?page=1&limit=20&status=&search=",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "messages"],
+                  "query": [
+                    { "key": "page",   "value": "1" },
+                    { "key": "limit",  "value": "20" },
+                    { "key": "status", "value": "", "description": "new | read | replied" },
+                    { "key": "search", "value": "" }
+                  ]
+                },
+                "description": "Get all contact form messages with status counts and pagination."
+              }
+            },
+            {
+              "name": "Update Message Status",
+              "request": {
+                "method": "PUT",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"replied\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/messages/{{messageId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "messages", "{{messageId}}"]
+                },
+                "description": "Update message status. Valid values: `new`, `read`, `replied`."
+              }
+            },
+            {
+              "name": "Delete Message",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/messages/{{messageId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "messages", "{{messageId}}"]
+                },
+                "description": "Permanently delete a contact message."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -138,6 +138,7 @@ const Footer = () => {
                   type="email"
                   placeholder="Your email"
                   className="newsletter-input"
+                  required
                 />
                 <button type="submit" className="newsletter-btn">
                   Subscribe

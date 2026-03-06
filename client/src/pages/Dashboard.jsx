@@ -5,13 +5,6 @@ import "../styles/pages/Dashboard.css";
 const Dashboard = () => {
   const { user } = useAuth();
 
-  // Helper to parse interests if they are strings
-  const userInterests = Array.isArray(user?.interests)
-    ? user.interests
-    : typeof user?.interests === "string"
-      ? user.interests.split(",").map((i) => i.trim())
-      : [];
-
   const getWelcomeMessage = () => {
     const hour = new Date().getHours();
     if (hour < 12) return "Good Morning";
@@ -50,42 +43,10 @@ const Dashboard = () => {
               </span>
             </h1>
             <p className="dashboard-subtitle">
-              {user?.profile_completed
-                ? "Ready to take the next step in your career journey?"
-                : "Let's unlock your full potential today."}
+              Ready to take the next step in your career journey?
             </p>
           </div>
-          <div className="header-action">
-            <Link to="/profile-setup" className="btn btn-primary btn-glow">
-              {user?.profile_completed ? "Update Profile" : "Complete Profile"}
-            </Link>
-          </div>
         </header>
-
-        {/* QUICK STATS ROW */}
-        <div className="stats-grid fade-in">
-          <div className="stat-card glass">
-            <div className="stat-icon profile-icon">👤</div>
-            <div className="stat-info">
-              <h3>Profile</h3>
-              <p>{user?.profile_completed ? "Completed" : "Incomplete"}</p>
-            </div>
-          </div>
-          <div className="stat-card glass">
-            <div className="stat-icon goal-icon">🎯</div>
-            <div className="stat-info">
-              <h3>Career Goal</h3>
-              <p>{user?.current_status || "Not Set"}</p>
-            </div>
-          </div>
-          <div className="stat-card glass">
-            <div className="stat-icon level-icon">🎓</div>
-            <div className="stat-info">
-              <h3>Education</h3>
-              <p>{user?.education_level || "Not Set"}</p>
-            </div>
-          </div>
-        </div>
 
         {/* MAIN CONTENT GRID */}
         <div className="dashboard-main-grid">
@@ -132,34 +93,13 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* RIGHT COLUMN - Interests & Profile Details */}
+          {/* RIGHT COLUMN */}
           <div className="side-col">
-            {user?.profile_completed && userInterests.length > 0 && (
-              <div className="dashboard-card interests-card">
-                <div className="dashboard-card-header">
-                  <h3 className="dashboard-card-title">My Interests</h3>
-                </div>
-                <div className="interests-cloud">
-                  {userInterests.map((interest, idx) => (
-                    <span key={idx} className="interest-pill">
-                      {interest}
-                    </span>
-                  ))}
-                  <Link to="/profile-setup" className="add-interest-btn">
-                    +
-                  </Link>
-                </div>
-              </div>
-            )}
-
             <div className="dashboard-card quick-links-card">
               <h3 className="dashboard-card-title">Quick Links</h3>
               <ul className="quick-links-list">
                 <li>
                   <Link to="/explore">Search Jobs</Link>
-                </li>
-                <li>
-                  <Link to="/profile-setup">Edit Resume</Link>
                 </li>
                 <li>
                   <Link to="/settings">Settings</Link>

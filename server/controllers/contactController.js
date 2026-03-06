@@ -1,4 +1,8 @@
 import { pool } from "../config/db.js";
+import {
+  sendContactNotification,
+  sendContactConfirmation,
+} from "../utils/emailService.js";
 
 /**
  * Submit contact form
@@ -30,9 +34,9 @@ export const submitContact = async (req, res) => {
       });
     }
 
-    if (message.length < 10) {
+    if (message.length < 5) {
       return res.status(400).json({
-        error: "Message must be at least 10 characters long",
+        error: "Message must be at least 5 characters long",
       });
     }
 
@@ -41,6 +45,30 @@ export const submitContact = async (req, res) => {
       `INSERT INTO contacts (name, email, subject, message, status) 
        VALUES (?, ?, ?, ?, 'new')`,
       [name, email, subject, message],
+    );
+
+    // Send email notification to admin (non-blocking — failure won't break the response)
+    sendContactNotification({
+      name,
+      email,
+      subject,
+      message,
+      contactId: result.insertId,
+    }).catch((emailErr) => {
+      console.error(
+        "⚠️  Failed to send contact notification email:",
+        emailErr.message,
+      );
+    });
+
+    // Send confirmation email to the user (non-blocking)
+    sendContactConfirmation({ name, email, subject, message }).catch(
+      (emailErr) => {
+        console.error(
+          "⚠️  Failed to send confirmation email to user:",
+          emailErr.message,
+        );
+      },
     );
 
     res.status(201).json({

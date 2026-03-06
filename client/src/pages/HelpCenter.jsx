@@ -13,7 +13,8 @@ const HelpCenter = () => {
     {
       id: 1,
       title: "Getting Started",
-      description: "Everything you need to know about setting up your profile.",
+      description:
+        "Everything you need to know to get started with CareerGuide.",
       icon: (
         <svg
           width="32"

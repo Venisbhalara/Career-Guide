@@ -9,7 +9,7 @@ const About = () => {
             <div className="hero-text">
               <h1>About CareerGuide</h1>
               <p>
-                We're on a mission to help everyone find work they actually
+                We&apos;re on a mission to help everyone find work they actually
                 enjoy. No generic advice, just real guidance based on who you
                 are.
               </p>
@@ -45,10 +45,10 @@ const About = () => {
                 color: "var(--color-text-secondary)",
               }}
             >
-              Too many people end up in careers that don't fit them. We built
-              CareerGuide to change that—using real assessments, honest data,
-              and clear roadmaps to help you find a path that actually makes
-              sense for you.
+              Too many people end up in careers that don&apos;t fit them. We
+              built CareerGuide to change that—using real assessments, honest
+              data, and clear roadmaps to help you find a path that actually
+              makes sense for you.
             </p>
           </section>
 
@@ -59,8 +59,9 @@ const About = () => {
                 <div className="about-card-icon">🎯</div>
                 <h3>Honest Guidance</h3>
                 <p>
-                  We don't sugarcoat things. We give you real information about
-                  careers— the good, the challenging, and everything in between.
+                  We don&apos;t sugarcoat things. We give you real information
+                  about careers— the good, the challenging, and everything in
+                  between.
                 </p>
               </div>
 
@@ -78,9 +79,9 @@ const About = () => {
                 <div className="about-card-icon">🤝</div>
                 <h3>Accessible to All</h3>
                 <p>
-                  Quality career guidance shouldn't be expensive. We offer free
-                  tools and affordable premium options so everyone can access
-                  what they need.
+                  Quality career guidance shouldn&apos;t be expensive. We offer
+                  free tools and affordable premium options so everyone can
+                  access what they need.
                 </p>
               </div>
             </div>

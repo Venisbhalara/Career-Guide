@@ -109,7 +109,6 @@ export const login = async (req, res) => {
         id: user.id,
         email: user.email,
         full_name: user.full_name,
-        profile_completed: user.profile_completed,
         is_admin: user.is_admin,
       },
       token: generateToken(user.id),
@@ -126,7 +125,7 @@ export const login = async (req, res) => {
 export const getMe = async (req, res) => {
   try {
     const [users] = await pool.query(
-      "SELECT id, email, full_name, phone, date_of_birth, gender, education_level, current_status, interests, profile_completed, is_admin, created_at FROM users WHERE id = ?",
+      "SELECT id, email, full_name, phone, is_admin, created_at FROM users WHERE id = ?",
       [req.user.id],
     );
 

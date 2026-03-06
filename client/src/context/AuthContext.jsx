@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import api from "../utils/api";
+import api, { setAuthToken, clearAuthToken } from "../utils/api";
 
 const AuthContext = createContext(null);
 
@@ -23,14 +23,14 @@ export const AuthProvider = ({ children }) => {
 
       if (token && savedUser) {
         try {
+          setAuthToken(token); // restore axios default header on page reload
           setUser(JSON.parse(savedUser));
           // Optionally verify token with backend
           const response = await api.get("/auth/me");
           setUser(response.data.user);
         } catch (error) {
           console.error("Auth check failed:", error);
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
+          clearAuthToken();
           setUser(null);
         }
       }
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
       const response = await api.post("/auth/login", { email, password });
       const { user, token } = response.data;
 
-      localStorage.setItem("token", token);
+      setAuthToken(token); // sets localStorage + axios default header
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
 
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
       const response = await api.post("/auth/register", userData);
       const { user, token } = response.data;
 
-      localStorage.setItem("token", token);
+      setAuthToken(token); // sets localStorage + axios default header
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
 
@@ -80,8 +80,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    clearAuthToken(); // clears localStorage + axios default header
     setUser(null);
   };
 

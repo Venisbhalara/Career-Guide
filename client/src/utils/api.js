@@ -26,8 +26,13 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Unauthorized - clear token and redirect to login
+    const requestUrl = error.config?.url || "";
+    const isAuthRoute =
+      requestUrl.includes("/auth/login") ||
+      requestUrl.includes("/auth/register");
+
+    if (error.response?.status === 401 && !isAuthRoute) {
+      // Unauthorized (for non-auth routes) - clear token and redirect to login
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       window.location.href = "/login";
@@ -35,5 +40,20 @@ api.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+// Call this after login to immediately sync the token
+export const setAuthToken = (token) => {
+  if (token) {
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    localStorage.setItem("token", token);
+  }
+};
+
+// Call this on logout to immediately clear the token
+export const clearAuthToken = () => {
+  delete api.defaults.headers.common["Authorization"];
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+};
 
 export default api;

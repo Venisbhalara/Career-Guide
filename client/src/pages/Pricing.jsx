@@ -320,7 +320,7 @@ const Pricing = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="pricing-faq">
+      {/* <section className="pricing-faq">
         <div className="container">
           <h2 className="section-title">Frequently Asked Questions</h2>
           <div className="faq-grid">
@@ -369,7 +369,7 @@ const Pricing = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section - Premium Design */}
       <section className="pricing-cta">

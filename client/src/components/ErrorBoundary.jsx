@@ -6,7 +6,7 @@ class ErrorBoundary extends React.Component {
     this.state = { hasError: false, error: null, errorInfo: null };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 
@@ -25,8 +25,8 @@ class ErrorBoundary extends React.Component {
           <div style={styles.content}>
             <h1 style={styles.title}>⚠️ Oops! Something went wrong</h1>
             <p style={styles.message}>
-              We're sorry for the inconvenience. The application encountered an
-              unexpected error.
+              We&apos;re sorry for the inconvenience. The application
+              encountered an unexpected error.
             </p>
             <button
               style={styles.button}
@@ -40,7 +40,7 @@ class ErrorBoundary extends React.Component {
             >
               Go to Home
             </button>
-            {process.env.NODE_ENV === "development" && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <details style={styles.details}>
                 <summary style={styles.summary}>Error Details</summary>
                 <pre style={styles.pre}>

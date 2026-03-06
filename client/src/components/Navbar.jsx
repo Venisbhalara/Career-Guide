@@ -127,12 +127,17 @@ const Navbar = () => {
                     <Link to="/dashboard" className="dropdown-item">
                       Dashboard
                     </Link>
-                    <Link to="/profile-setup" className="dropdown-item">
-                      Profile
-                    </Link>
                     <Link to="/counselling" className="dropdown-item">
                       Counselling
                     </Link>
+                    {!!user?.is_admin && (
+                      <Link
+                        to="/admin"
+                        className="dropdown-item dropdown-item-admin"
+                      >
+                        ⚙️ Admin Panel
+                      </Link>
+                    )}
                     <div className="dropdown-divider"></div>
                     <button onClick={handleLogout} className="dropdown-item">
                       Logout
@@ -186,6 +191,17 @@ const Navbar = () => {
                 <Link to="/dashboard" className="mobile-nav-link">
                   Dashboard
                 </Link>
+                <Link to="/counselling" className="mobile-nav-link">
+                  Counselling
+                </Link>
+                {!!user?.is_admin && (
+                  <Link
+                    to="/admin"
+                    className="mobile-nav-link mobile-nav-link-admin"
+                  >
+                    ⚙️ Admin Panel
+                  </Link>
+                )}
                 <button onClick={handleLogout} className="mobile-nav-link">
                   Logout
                 </button>

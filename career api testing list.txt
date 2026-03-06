@@ -1,0 +1,74 @@
+health done 
+
+
+register done 
+login done 
+get user done 
+
+
+get profile done 
+update profile done 
+
+
+get all careers done 
+get all careers fields done 
+get career by field done 
+get career by id done 
+
+
+get assessments questions done
+submit assessments done 
+get assessments results done
+
+
+get recommendations done 
+
+
+get all courses done 
+get courses by career done 
+get courses by skill done 
+
+
+Get All Counselors done 
+Get Available Slots done 
+book session done 
+get my sessions done 
+cancel session done 
+reschedule session done 
+
+
+Submit Contact Form done 
+get all contacts done 
+Update Contact Status done
+-----------------------
+
+admin panel
+--------------
+get analytics done
+Get All Careers (Admin) done 
+Get Career by ID (Admin) done 
+add career done 
+update career done 
+delete career done 
+
+get all users done
+toggle admin user done 
+delete user done 
+
+get all question done 
+add questions done 
+update question done 
+delete question done 
+
+get all sessions done 
+update sessions done 
+delete sessions done 
+
+Get All Subscriptions done 
+update done 
+delete done 
+
+get all messages done 
+update messages done 
+delete messages done 
+

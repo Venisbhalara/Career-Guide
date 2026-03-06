@@ -481,7 +481,7 @@ VALUES (
         'beginner'
     );
 
--- Create an admin user (password: admin123)
+-- Create an admin user (email: vasu@gmail.com | password: 123456)
 INSERT INTO
     users (
         email,
@@ -491,9 +491,9 @@ INSERT INTO
         profile_completed
     )
 VALUES (
-        'admin@careerguide.com',
-        '$2a$10$rZ5YvGKvXqKx8qQqX8qQqeX8qQqX8qQqX8qQqX8qQqX8qQqX8qQqX',
-        'Admin User',
+        'vasu@gmail.com',
+        '$2a$10$XTl1C1kiKg0VVfdZyFuyn.B1c17F3oeEtadj9nFjDaABzSdaXxpDC',
+        'Vasu',
         TRUE,
         TRUE
     );

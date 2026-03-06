@@ -1,0 +1,492 @@
+/* AdminAssessments.css — Minimalist, premium */
+
+/* ── Stats Row ───────────────────────────────────────── */
+.assessment-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.assessment-stat-card {
+  background: #fff;
+  border: 1px solid #ebebf0;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: box-shadow 0.18s;
+}
+
+.assessment-stat-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+.astat-icon {
+  font-size: 1.5rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.astat-icon.interest {
+  background: #eef2ff;
+}
+.astat-icon.personality {
+  background: #fdf2f8;
+}
+.astat-icon.aptitude {
+  background: #ecfdf5;
+}
+.astat-icon.users {
+  background: #fffbeb;
+}
+
+.astat-val {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.astat-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #8b90a0;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-top: 2px;
+}
+
+/* ── Toolbar ──────────────────────────────────────────── */
+.assessment-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.assessment-toolbar .admin-search-wrap {
+  flex: 1;
+  min-width: 200px;
+}
+
+.type-tab-group {
+  display: flex;
+  background: #f5f5fb;
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.type-tab {
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: none;
+  background: none;
+  color: #6b7080;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.type-tab.active {
+  background: #fff;
+  color: var(--color-primary, #4f46e5);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.type-tab:hover:not(.active) {
+  color: #3a3a52;
+}
+
+.btn-add-question {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.15rem;
+  background: var(--color-primary, #4f46e5);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+
+.btn-add-question:hover {
+  background: #4338ca;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25);
+  transform: translateY(-1px);
+}
+
+.q-count-badge {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #8b90a0;
+  background: #f3f3fb;
+  padding: 0.4rem 0.8rem;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+/* ── Question Cards ───────────────────────────────────── */
+.questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.question-card {
+  background: #fff;
+  border: 1px solid #ebebf0;
+  border-radius: 14px;
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition:
+    box-shadow 0.16s,
+    transform 0.16s;
+  position: relative;
+}
+
+.question-card:hover {
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+.q-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: #f3f3fb;
+  color: var(--color-primary, #4f46e5);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.q-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.q-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  line-height: 1.45;
+  margin-bottom: 0.6rem;
+}
+
+.q-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.q-type-pill {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 0.18rem 0.55rem;
+  border-radius: 100px;
+}
+
+.q-type-pill.interest {
+  background: #eef2ff;
+  color: #4338ca;
+}
+.q-type-pill.personality {
+  background: #fdf2f8;
+  color: #db2777;
+}
+.q-type-pill.aptitude {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.q-category-pill {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.18rem 0.55rem;
+  border-radius: 100px;
+  background: #f5f5fb;
+  color: #6b7080;
+  text-transform: capitalize;
+}
+
+.q-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.q-option {
+  font-size: 0.72rem;
+  padding: 0.18rem 0.6rem;
+  background: #f8f8fc;
+  border: 1px solid #ebebf0;
+  border-radius: 6px;
+  color: #3a3a52;
+}
+
+.q-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+/* reuse action-btn styles from AdminUsers */
+.q-edit-btn,
+.q-delete-btn {
+  padding: 0.38rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.q-edit-btn {
+  background: #f3f3fb;
+  color: var(--color-primary, #4f46e5);
+  border-color: #e0dff5;
+}
+
+.q-edit-btn:hover {
+  background: #ebe8ff;
+}
+
+.q-delete-btn {
+  background: #fff5f5;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.q-delete-btn:hover {
+  background: #fee2e2;
+}
+
+/* ── Skeleton ─────────────────────────────────────────── */
+.question-card-skeleton {
+  background: #fff;
+  border: 1px solid #ebebf0;
+  border-radius: 14px;
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* ── Empty state ─────────────────────────────────────── */
+.assessment-empty {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  color: #b0b4be;
+  background: #fff;
+  border: 1px solid #ebebf0;
+  border-radius: 14px;
+}
+
+.assessment-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+.assessment-empty p {
+  font-size: 0.875rem;
+}
+
+/* ── Modal ────────────────────────────────────────────── */
+.assessment-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 15, 35, 0.4);
+  backdrop-filter: blur(6px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: adminFadeUp 0.2s ease;
+}
+
+.assessment-modal {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.14);
+}
+
+.assessment-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid #f0f0f5;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+  border-radius: 20px 20px 0 0;
+}
+
+.assessment-modal-header h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.assessment-modal-body {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.assessment-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.25rem 1.75rem;
+  border-top: 1px solid #f0f0f5;
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  border-radius: 0 0 20px 20px;
+}
+
+/* options builder */
+.options-builder {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.option-row .form-input {
+  flex: 1;
+}
+
+.option-score-input {
+  width: 72px;
+  flex-shrink: 0;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid #e4e4ee;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  color: #1a1a2e;
+  background: #fafafa;
+  outline: none;
+  transition: border-color 0.18s;
+  text-align: center;
+}
+
+.option-score-input:focus {
+  border-color: var(--color-primary, #4f46e5);
+  background: #fff;
+}
+
+.btn-remove-option {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #fecaca;
+  background: #fff5f5;
+  color: #dc2626;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.btn-remove-option:hover {
+  background: #fee2e2;
+}
+
+.btn-add-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  border: 1px dashed #d0cff5;
+  background: #fafafe;
+  color: var(--color-primary, #4f46e5);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  align-self: flex-start;
+}
+
+.btn-add-option:hover {
+  background: #eeecff;
+  border-color: #b0aef0;
+}
+
+.options-hint {
+  font-size: 0.7rem;
+  color: #a0a4b0;
+  margin-top: 0.15rem;
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 900px) {
+  .assessment-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .assessment-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+  .assessment-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .type-tab-group {
+    justify-content: center;
+  }
+  .question-card {
+    flex-direction: column;
+  }
+  .q-actions {
+    flex-direction: row;
+  }
+}
