@@ -29,11 +29,28 @@ if (!process.env.CLIENT_URL) {
 }
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:5174",
-      process.env.CLIENT_URL,
-    ].filter(Boolean),
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g., mobile apps, curl)
+      if (!origin) return callback(null, true);
+
+      const allowedLocal = ["http://localhost:5173", "http://localhost:5174"];
+      let clientUrl = process.env.CLIENT_URL;
+      if (clientUrl) {
+        // Strip trailing slash if there is one
+        clientUrl = clientUrl.replace(/\/$/, "");
+      }
+
+      // Allow if origin is local, matches exact CLIENT_URL, or is a Vercel deployment
+      if (
+        allowedLocal.includes(origin) ||
+        (clientUrl && origin === clientUrl) ||
+        origin.endsWith(".vercel.app")
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   }),
 );
