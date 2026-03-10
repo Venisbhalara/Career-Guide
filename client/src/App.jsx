@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
@@ -36,6 +41,19 @@ import Payment from "./pages/Payment";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
 import Settings from "./pages/Settings";
+
+// Shared layout — renders Navbar, child route via Outlet, then Footer
+function SharedLayout() {
+  return (
+    <div className="app">
+      <Navbar />
+      <main>
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
+  );
+}
 
 function App() {
   useLenis();
@@ -104,80 +122,67 @@ function App() {
               }
             />
 
-            {/* All other routes — shared Navbar + Footer shell */}
-            <Route
-              path="*"
-              element={
-                <div className="app">
-                  <Navbar />
-                  <main>
-                    <Routes>
-                      {/* Public Routes */}
-                      <Route path="/" element={<Home />} />
-                      <Route path="/about" element={<About />} />
-                      <Route path="/explore" element={<ExploreCareers />} />
-                      <Route path="/careers/:id" element={<CareerDetail />} />
-                      <Route path="/courses" element={<Courses />} />
-                      <Route path="/pricing" element={<Pricing />} />
-                      <Route path="/faq" element={<FAQ />} />
-                      <Route path="/contact" element={<Contact />} />
-                      <Route path="/login" element={<Login />} />
-                      <Route path="/register" element={<Register />} />
-                      <Route path="/blog" element={<Blog />} />
-                      <Route path="/help-center" element={<HelpCenter />} />
-                      <Route
-                        path="/privacy-policy"
-                        element={<PrivacyPolicy />}
-                      />
+            {/* All other routes — rendered inside SharedLayout (Navbar + Footer) */}
+            <Route element={<SharedLayout />}>
+              {/* Public Routes */}
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/explore" element={<ExploreCareers />} />
+              <Route path="/careers/:id" element={<CareerDetail />} />
+              <Route path="/courses" element={<Courses />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/help-center" element={<HelpCenter />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
-                      <Route
-                        path="/assessment"
-                        element={
-                          <ProtectedRoute>
-                            <AssessmentTest />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/dashboard"
-                        element={
-                          <ProtectedRoute>
-                            <Dashboard />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/counselling"
-                        element={
-                          <ProtectedRoute>
-                            <Counselling />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/payment"
-                        element={
-                          <ProtectedRoute>
-                            <Payment />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/settings"
-                        element={
-                          <ProtectedRoute>
-                            <Settings />
-                          </ProtectedRoute>
-                        }
-                      />
-                      {/* 404 Catch-all Route */}
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </main>
-                  <Footer />
-                </div>
-              }
-            />
+              {/* Protected Routes */}
+              <Route
+                path="/assessment"
+                element={
+                  <ProtectedRoute>
+                    <AssessmentTest />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/counselling"
+                element={
+                  <ProtectedRoute>
+                    <Counselling />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/payment"
+                element={
+                  <ProtectedRoute>
+                    <Payment />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <ProtectedRoute>
+                    <Settings />
+                  </ProtectedRoute>
+                }
+              />
+              {/* 404 Catch-all Route */}
+              <Route path="*" element={<NotFound />} />
+            </Route>
           </Routes>
         </Router>
       </AuthProvider>

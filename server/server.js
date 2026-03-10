@@ -22,6 +22,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+if (!process.env.CLIENT_URL) {
+  console.warn(
+    "⚠️  WARNING: CLIENT_URL env var is not set. Your production frontend may be blocked by CORS.",
+  );
+}
 app.use(
   cors({
     origin: [
