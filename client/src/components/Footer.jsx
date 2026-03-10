@@ -21,7 +21,11 @@ const Footer = () => {
               believe everyone deserves to find work they love.
             </p>
             <div className="social-links">
-              <a href="#" className="social-link twitter" aria-label="Twitter">
+              <a
+                href="https://x.com/"
+                className="social-link twitter"
+                aria-label="Twitter"
+              >
                 <svg
                   width="20"
                   height="20"
@@ -36,7 +40,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com/"
                 className="social-link linkedin"
                 aria-label="LinkedIn"
               >
@@ -56,7 +60,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/"
                 className="social-link instagram"
                 aria-label="Instagram"
               >
