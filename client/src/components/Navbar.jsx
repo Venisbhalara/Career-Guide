@@ -130,6 +130,9 @@ const Navbar = () => {
                     <Link to="/counselling" className="dropdown-item">
                       Counselling
                     </Link>
+                    <Link to="/settings" className="dropdown-item">
+                      Settings
+                    </Link>
                     {!!user?.is_admin && (
                       <Link
                         to="/admin"

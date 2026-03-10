@@ -35,6 +35,7 @@ import HelpCenter from "./pages/HelpCenter";
 import Payment from "./pages/Payment";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
+import Settings from "./pages/Settings";
 
 function App() {
   useLenis();
@@ -158,6 +159,14 @@ function App() {
                         element={
                           <ProtectedRoute>
                             <Payment />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route
+                        path="/settings"
+                        element={
+                          <ProtectedRoute>
+                            <Settings />
                           </ProtectedRoute>
                         }
                       />

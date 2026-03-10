@@ -84,8 +84,8 @@ const startServer = async () => {
 
     await testConnection();
     app.listen(PORT, () => {
-      console.log(`\n🚀 Server running on http://localhost:${PORT}`);
-      console.log(`📊 Environment: ${process.env.NODE_ENV || "development"}\n`);
+      console.log(`\n Server running on http://localhost:${PORT}`);
+      console.log(` Environment: ${process.env.NODE_ENV || "development"}\n`);
     });
   } catch (error) {
     console.error("Failed to start server:", error);
