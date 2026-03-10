@@ -25,7 +25,10 @@ const testConnection = async () => {
     connection.release();
   } catch (error) {
     console.error("✗ Database connection failed:", error.message);
-    process.exit(1);
+    // Don't kill the Vercel function if DB connection fails, just log it so other routes can still handle errors
+    if (!process.env.VERCEL) {
+      process.exit(1);
+    }
   }
 };
 

@@ -84,18 +84,25 @@ const startServer = async () => {
       console.error(
         "Server startup aborted due to missing environment variables.",
       );
-      process.exit(1);
+      if (!process.env.VERCEL) process.exit(1);
     }
 
     await testConnection();
-    app.listen(PORT, () => {
-      console.log(`\n Server running on http://localhost:${PORT}`);
-      console.log(` Environment: ${process.env.NODE_ENV || "development"}\n`);
-    });
+
+    // Only start listening if we're not running on Vercel
+    if (!process.env.VERCEL) {
+      app.listen(PORT, () => {
+        console.log(`\n Server running on http://localhost:${PORT}`);
+        console.log(` Environment: ${process.env.NODE_ENV || "development"}\n`);
+      });
+    }
   } catch (error) {
     console.error("Failed to start server:", error);
-    process.exit(1);
+    if (!process.env.VERCEL) process.exit(1);
   }
 };
 
 startServer();
+
+// Export the app for Vercel serverless functions
+export default app;
