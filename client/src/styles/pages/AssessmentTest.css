@@ -59,105 +59,228 @@
 }
 
 /* Question Card */
-.question-card {
-  max-width: 800px;
+/* iOS Style Premium App Container (from image) - Adapted horizontally for web */
+.ios-question-container {
+  max-width: 1000px;
+  width: 95%;
   margin: 0 auto;
-  position: relative;
+  background-color: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 50vh;
+  animation: slideIn var(--transition-base) ease-out;
+  border: 1px solid rgba(0,0,0,0.05);
+  
+  /* Subtle styling background */
+  background: linear-gradient(135deg, #ffffff 0%, #f9faff 100%);
 }
 
-.question-header {
-  margin-bottom: 2rem;
+.page-container {
+  /* Soft background environment */
+  background: radial-gradient(circle at top left, #f3f6fa, #f0eefe, var(--color-bg-secondary));
+  display: flex;
+  align-items: flex-start; /* Changed from center to prevent top cutoff */
+  justify-content: center;
+  padding: 8rem 1rem 4rem; /* Added generous top padding for the fixed navbar */
+  min-height: 100vh;
 }
 
-.question-category {
-  font-size: var(--text-sm);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--color-primary);
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.question-text {
-  font-size: var(--text-2xl);
-  font-weight: 700;
-  color: var(--color-text-primary);
-  line-height: 1.3;
-}
-
-/* Options Grid */
-.options-grid {
-  display: grid;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.option-card {
-  padding: 1.25rem 1.5rem;
-  background: white;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+/* Header Section */
+.ios-header {
   display: flex;
   align-items: center;
-  font-size: var(--text-lg);
-  font-weight: 500;
-  color: var(--color-text-secondary);
+  justify-content: space-between;
+  padding: 2rem 3rem 1rem;
+  background-color: transparent;
 }
 
-.option-card:hover {
-  border-color: var(--color-primary-light);
-  background: rgba(79, 70, 229, 0.02);
-  transform: translateX(5px);
-}
-
-.option-card.selected {
-  border-color: var(--color-primary);
-  background: rgba(79, 70, 229, 0.1);
-  color: var(--color-primary);
-  font-weight: 600;
-}
-
-.option-key {
-  width: 32px;
-  height: 32px;
+.ios-back-btn {
+  background: var(--color-bg-secondary);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg-secondary);
-  border-radius: 6px;
-  margin-right: 1rem;
-  font-size: var(--text-sm);
-  font-weight: 700;
-  color: var(--color-text-tertiary);
+  cursor: pointer;
+  color: #333;
   transition: all 0.2s ease;
 }
 
-.option-card.selected .option-key {
-  background: var(--color-primary);
+.ios-back-btn:hover {
+  background: #e2e8f0;
+}
+
+.ios-header-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.ios-timer {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Progress Bar (Attached to header) */
+.ios-progress-bar-container {
+  height: 3px;
+  width: 100%;
+  background-color: #f1effe;
+}
+
+.ios-progress-bar {
+  height: 100%;
+  background-color: #8b5cf6; /* Distinct purple from screenshot */
+  transition: width 0.4s ease;
+  border-radius: 0 3px 3px 0;
+}
+
+/* Content Area - Horizontal Split */
+.ios-content-wrapper {
+  padding: 3rem;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .ios-content-wrapper {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 2rem 1.5rem;
+  }
+}
+
+.ios-question-side {
+  display: flex;
+  flex-direction: column;
+}
+
+.ios-question-meta {
+  color: #8b5cf6; /* Purple text */
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.ios-question-text {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1.3;
+  margin-bottom: 2rem;
+  font-family: var(--font-display, var(--font-sans));
+}
+
+/* Options List */
+.ios-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ios-option-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.25rem;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid #eaeaea;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ios-option-card:hover {
+  border-color: #d8b4fe;
+}
+
+.ios-option-card.selected {
+  background-color: #f3e8ff; /* Light purple bg */
+  border-color: #8b5cf6;
+}
+
+.ios-option-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.ios-radio-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.ios-option-card.selected .ios-radio-circle {
+  background-color: #8b5cf6;
+  border-color: #8b5cf6;
+}
+
+.ios-checkmark {
+  font-size: 12px;
   color: white;
 }
 
-/* Progress Bar */
-.assessment-progress {
-  position: relative;
-  height: 6px;
-  background: var(--color-border);
-  border-radius: 3px;
-  margin-bottom: 3rem;
-  overflow: hidden;
+/* Bottom Navigation */
+.ios-bottom-nav {
+  padding: 0 3rem 2rem;
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
 }
 
-.assessment-progress-bar {
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    var(--color-primary),
-    var(--color-secondary)
-  );
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+@media (max-width: 768px) {
+  .ios-bottom-nav {
+    padding: 0 1.5rem 1.5rem;
+  }
+}
+
+.ios-next-btn {
+  width: 200px; /* Reduced width for desktop */
+  background-color: #111111; /* Pitch black */
+  color: white;
+  padding: 1.25rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.ios-next-btn:active {
+  transform: scale(0.98);
+}
+
+.ios-next-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* Loading/Analyzing State */

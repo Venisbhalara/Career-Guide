@@ -12,6 +12,7 @@ const AssessmentTest = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [results, setResults] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(120); // 2 minutes (120 seconds)
 
   // MOCK DATA FALLBACK (In case backend is empty)
   const MOCK_QUESTIONS = [
@@ -97,8 +98,25 @@ const AssessmentTest = () => {
     fetchQuestions();
   }, []);
 
+  useEffect(() => {
+    // Timer logic
+    let timerId;
+    if (phase === "test" && timeLeft > 0) {
+      timerId = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+    } else if (phase === "test" && timeLeft === 0) {
+      handleSubmit(); // Auto-submit when time runs out
+    }
+    
+    return () => {
+      if (timerId) clearInterval(timerId);
+    };
+  }, [phase, timeLeft]);
+
   const handleStart = () => {
     setPhase("test");
+    setTimeLeft(120); // Reset timer just in case
     window.scrollTo(0, 0);
   };
 
@@ -233,64 +251,83 @@ const AssessmentTest = () => {
     const isLastQuestion = currentQuestionIndex === questions.length - 1;
     const hasAnsweredCurrent = answers[question.id] !== undefined;
 
+    // Format timer
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    const formattedTime = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+
     return (
-      <div className="question-card slide-in">
-        <div className="assessment-progress">
+      <div className="ios-question-container">
+        {/* Header Setup */}
+        <div className="ios-header">
+          <button
+            onClick={handlePrevStub}
+            className="ios-back-btn"
+            disabled={isFirstQuestion}
+            style={{ visibility: isFirstQuestion ? 'hidden' : 'visible' }}
+          >
+            ←
+          </button>
+          
+          <h2 className="ios-header-title">
+            {question.category || "General"}
+          </h2>
+          
+          <div className={`ios-timer ${timeLeft < 30 ? 'text-danger' : ''}`}>
+            ⏱ {formattedTime}
+          </div>
+        </div>
+
+        {/* Purple Progress Line attached directly below header */}
+        <div className="ios-progress-bar-container">
           <div
-            className="assessment-progress-bar"
+            className="ios-progress-bar"
             style={{ width: `${progress}%` }}
           ></div>
         </div>
 
-        <div className="question-header text-center">
-          <div className="question-category">
-            {question.category || "General"}
+        {/* Content Section */}
+        <div className="ios-content-wrapper">
+          <div className="ios-question-side">
+            <div className="ios-question-meta">
+              Questions {currentQuestionIndex + 1} of {questions.length}
+            </div>
+
+            <h3 className="ios-question-text">{question.question_text}</h3>
           </div>
-          <h2 className="question-text">{question.question_text}</h2>
-        </div>
 
-        <div className="options-grid">
-          {question.options.map((opt, idx) => {
-            const label = opt.label || opt;
-            const val = opt.value || idx + 1;
-            const isSelected = answers[question.id] === val;
+          <div className="ios-options-list">
+            {question.options.map((opt, idx) => {
+              const label = opt.label || opt;
+              const val = opt.value || idx + 1;
+              const isSelected = answers[question.id] === val;
 
-            return (
-              <div
-                key={idx}
-                className={`option-card ${isSelected ? "selected" : ""}`}
-                onClick={() => handleManualAnswer(val)}
-              >
-                <div className="option-key">
-                  {String.fromCharCode(65 + idx)}
+              return (
+                <div
+                  key={idx}
+                  className={`ios-option-card ${isSelected ? "selected" : ""}`}
+                  onClick={() => handleManualAnswer(val)}
+                >
+                  <span className="ios-option-label">{label}</span>
+                  <div className="ios-radio-circle">
+                    {isSelected && (
+                      <span className="ios-checkmark">✔</span>
+                    )}
+                  </div>
                 </div>
-                <span>{label}</span>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
-        {/* Navigation Buttons */}
-        <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-100">
-          <button
-            onClick={handlePrevStub}
-            className={`btn btn-secondary ${isFirstQuestion ? "invisible" : ""}`}
-            disabled={isFirstQuestion}
-          >
-            Previous
-          </button>
-
-          <div className="text-secondary text-sm">
-            Question {currentQuestionIndex + 1} of {questions.length}
-          </div>
-
+        {/* Bottom Navigation */}
+        <div className="ios-bottom-nav">
           <button
             onClick={handleNextStub}
-            className="btn btn-primary"
+            className="ios-next-btn"
             disabled={!hasAnsweredCurrent}
-            style={{ minWidth: "120px" }}
           >
-            {isLastQuestion ? "Submit" : "Next"}
+            {isLastQuestion ? "Submit" : "Next"} <span>→</span>
           </button>
         </div>
       </div>

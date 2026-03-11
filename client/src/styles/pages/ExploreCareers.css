@@ -353,15 +353,43 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+  .explore-header {
+    padding: 4rem 0 1.5rem;
+  }
+  .page-title {
+    font-size: 2.25rem;
+    line-height: 1.2;
+  }
+  .page-desc {
+    font-size: 1.05rem;
+  }
+  .page-desc br {
+    display: none;
+  }
   .controls-inner {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
   }
+  .search-wrapper {
+    flex: none;
+    width: 100%;
+  }
+  .search-input {
+    width: 100%;
+    box-sizing: border-box;
+  }
   .filters-wrapper {
     padding-bottom: 0.5rem;
+    margin: 0 -1.5rem;
+    padding: 0.5rem 1.5rem;
   }
-  .page-title {
-    font-size: 2rem;
+  .cards-layout {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .career-card {
+    padding: 1.25rem;
   }
 }
+

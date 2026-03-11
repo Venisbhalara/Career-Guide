@@ -37,14 +37,16 @@ const Navbar = () => {
     };
   }, [isUserMenuOpen]);
 
-  // Close user menu when route changes
+  // Close user and mobile menus when route changes
   useEffect(() => {
     setIsUserMenuOpen(false);
+    setIsMobileMenuOpen(false);
   }, [location]);
 
   const handleLogout = () => {
     logout();
     setIsUserMenuOpen(false);
+    setIsMobileMenuOpen(false);
   };
 
   const isActive = (path) => location.pathname === path;
