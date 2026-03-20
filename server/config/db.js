@@ -15,6 +15,11 @@ const pool = mysql.createPool({
   queueLimit: 0,
   enableKeepAlive: true,
   keepAliveInitialDelay: 0,
+  // Use SSL for production (required by many cloud providers like TiDB)
+  // Default to SSL if DB_HOST is not localhost, or if DB_SSL is explicitly "true"
+  ssl: (process.env.DB_SSL === "true" || (process.env.DB_HOST && !process.env.DB_HOST.includes("localhost"))) 
+    ? { rejectUnauthorized: false } 
+    : null,
 });
 
 // Test connection
