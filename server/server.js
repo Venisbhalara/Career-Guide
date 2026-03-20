@@ -102,6 +102,8 @@ app.use((err, req, res, next) => {
   });
 });
 
+import { setupDatabase } from "./database/setup.js";
+
 // Start server
 const startServer = async () => {
   try {
@@ -112,6 +114,9 @@ const startServer = async () => {
       );
       if (!process.env.VERCEL) process.exit(1);
     }
+
+    // Initialize/Sync Database
+    await setupDatabase();
 
     await testConnection();
 
