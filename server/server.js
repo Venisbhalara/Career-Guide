@@ -63,6 +63,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// Root route
+app.get("/", (req, res) => {
+  res.json({
+    message: "Welcome to Career Guide API",
+    status: "active",
+    health_check: "/health",
+  });
+});
+
 // Health check
 app.get("/health", (req, res) => {
   res.json({ status: "ok", message: "Server is running" });
