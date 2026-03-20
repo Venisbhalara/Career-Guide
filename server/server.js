@@ -77,6 +77,21 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok", message: "Server is running" });
 });
 
+// Debug DB (temporary)
+app.get("/debug-db", async (req, res) => {
+  try {
+    const [rows] = await pool.query("SHOW TABLES");
+    const tables = rows.map(row => Object.values(row)[0]);
+    res.json({ 
+      status: "connected", 
+      database: process.env.DB_NAME || "defaultdb",
+      tables 
+    });
+  } catch (error) {
+    res.status(500).json({ status: "error", message: error.message });
+  }
+});
+
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
@@ -116,7 +131,12 @@ const startServer = async () => {
     }
 
     // Initialize/Sync Database
-    await setupDatabase();
+    const setupSuccess = await setupDatabase();
+    if (!setupSuccess) {
+      console.warn("⚠️ Database initialization check failed. The server will try to connect anyway.");
+    } else {
+      console.log("✓ Database initialization check completed.");
+    }
 
     await testConnection();
 
