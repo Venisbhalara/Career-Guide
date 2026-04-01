@@ -153,7 +153,9 @@ CREATE TABLE courses (
     FOREIGN KEY (skill_id) REFERENCES skills (id) ON DELETE SET NULL,
     INDEX idx_career (career_id),
     INDEX idx_skill (skill_id),
-    INDEX idx_platform (platform)
+    INDEX idx_platform (platform),
+    INDEX idx_difficulty (difficulty_level),
+    INDEX idx_is_free (is_free)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 -- Counselling sessions

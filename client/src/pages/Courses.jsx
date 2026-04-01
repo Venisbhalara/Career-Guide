@@ -6,7 +6,7 @@ import "../styles/pages/Common.css";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     search: "",
@@ -25,9 +25,7 @@ const Courses = () => {
     const fetchCourses = async () => {
       try {
         // Show loading only after initial load (during filter changes)
-        if (hasLoadedInitially.current) {
-          setLoading(true);
-        }
+        setLoading(true);
         setError(null);
 
         // Build query params
@@ -101,7 +99,7 @@ const Courses = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.05,
       },
     },
   };

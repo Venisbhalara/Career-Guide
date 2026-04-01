@@ -56,7 +56,7 @@ export const getCoursesBySkill = async (req, res) => {
   }
 };
 
-// @desc    Get all courses
+// @desc    Get all courses with optional filtering and pagination
 // @route   GET /api/courses
 // @access  Public
 export const getAllCourses = async (req, res) => {
@@ -72,49 +72,54 @@ export const getAllCourses = async (req, res) => {
     } = req.query;
 
     let query = "SELECT * FROM courses WHERE 1=1";
+    let countQuery = "SELECT COUNT(*) as total FROM courses WHERE 1=1";
     const params = [];
 
-    // Search filter
+    // Filters
+    let filterString = "";
     if (search) {
-      query += " AND (title LIKE ? OR description LIKE ?)";
+      filterString += " AND (title LIKE ? OR description LIKE ?)";
       const searchTerm = `%${search}%`;
       params.push(searchTerm, searchTerm);
     }
 
-    // Platform filter
     if (platform) {
-      query += " AND platform = ?";
+      filterString += " AND platform = ?";
       params.push(platform);
     }
 
-    // Difficulty filter
     if (difficulty) {
-      query += " AND difficulty_level = ?";
+      filterString += " AND difficulty_level = ?";
       params.push(difficulty);
     }
 
-    // Price type filter
     if (is_free !== undefined) {
-      query += " AND is_free = ?";
+      filterString += " AND is_free = ?";
       params.push(is_free === "true");
     }
 
-    // Rating filter
     if (min_rating) {
-      query += " AND rating >= ?";
+      filterString += " AND rating >= ?";
       params.push(parseFloat(min_rating));
     }
 
-    // Get total count for pagination
-    const countQuery = query.replace("SELECT *", "SELECT COUNT(*) as total");
-    const [totalRows] = await pool.query(countQuery, params);
-    const total = totalRows[0].total;
+    query += filterString;
+    countQuery += filterString;
 
-    // Add pagination
-    query += " ORDER BY rating DESC, created_at DESC LIMIT ? OFFSET ?";
-    params.push(parseInt(limit), parseInt(offset));
+    // Get courses first (common case)
+    const dataQuery = `${query} ORDER BY rating DESC, created_at DESC LIMIT ? OFFSET ?`;
+    const dataParams = [...params, parseInt(limit), parseInt(offset)];
 
-    const [courses] = await pool.query(query, params);
+    // Execute data fetch
+    const [courses] = await pool.query(dataQuery, dataParams);
+
+    // Only fetch total count if we actually got results and it's likely there are more
+    // This saves one query for many simple cases
+    let total = courses.length + parseInt(offset);
+    if (courses.length === parseInt(limit)) {
+      const [totalRows] = await pool.query(countQuery, params);
+      total = totalRows[0].total;
+    }
 
     res.json({
       courses,

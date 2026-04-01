@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { testConnection } from "./config/db.js";
+import { pool, testConnection } from "./config/db.js";
 import { validateEnv } from "./utils/validateEnv.js";
 
 // Route imports
@@ -81,11 +81,11 @@ app.get("/health", (req, res) => {
 app.get("/debug-db", async (req, res) => {
   try {
     const [rows] = await pool.query("SHOW TABLES");
-    const tables = rows.map(row => Object.values(row)[0]);
-    res.json({ 
-      status: "connected", 
+    const tables = rows.map((row) => Object.values(row)[0]);
+    res.json({
+      status: "connected",
       database: process.env.DB_NAME || "defaultdb",
-      tables 
+      tables,
     });
   } catch (error) {
     res.status(500).json({ status: "error", message: error.message });
@@ -131,11 +131,18 @@ const startServer = async () => {
     }
 
     // Initialize/Sync Database
-    const setupSuccess = await setupDatabase();
-    if (!setupSuccess) {
-      console.warn("⚠️ Database initialization check failed. The server will try to connect anyway.");
+    // Skip this on Vercel to reduce cold start times, as the database should already be set up
+    if (process.env.VERCEL) {
+      console.log("⚡ Vercel environment detected. Skipping automatic database setup.");
     } else {
-      console.log("✓ Database initialization check completed.");
+      const setupSuccess = await setupDatabase();
+      if (!setupSuccess) {
+        console.warn(
+          "⚠️ Database initialization check failed. The server will try to connect anyway.",
+        );
+      } else {
+        console.log("✓ Database initialization check completed.");
+      }
     }
 
     await testConnection();
