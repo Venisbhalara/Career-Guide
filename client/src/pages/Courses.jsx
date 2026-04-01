@@ -197,7 +197,7 @@ const Courses = () => {
         {loading ? (
           <div className="loading-state">
             <div className="spinner"></div>
-            <p>Loading premium resources...</p>
+            <p>Loading resources...</p>
           </div>
         ) : error ? (
           <div className="error-state glass">
