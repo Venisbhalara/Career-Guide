@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import AdminLayout from "../components/AdminLayout";
 import api from "../utils/api";
@@ -24,69 +24,78 @@ const AdminDashboard = () => {
     fetchAnalytics();
   }, []);
 
-  const totalSessions =
-    analytics?.counselling_sessions?.reduce(
-      (sum, s) => sum + Number(s.count),
-      0,
-    ) ?? 0;
+  const totalSessions = useMemo(
+    () =>
+      analytics?.counselling_sessions?.reduce(
+        (sum, s) => sum + Number(s.count),
+        0,
+      ) ?? 0,
+    [analytics],
+  );
 
-  const statCards = [
-    {
-      icon: "👥",
-      label: "Total Users",
-      value: analytics?.total_users ?? "—",
-      color: "color-indigo",
-    },
-    {
-      icon: "🎯",
-      label: "Total Careers",
-      value: analytics?.total_careers ?? "—",
-      color: "color-violet",
-    },
-    {
-      icon: "📝",
-      label: "Assessments Done",
-      value: analytics?.assessments_completed ?? "—",
-      color: "color-emerald",
-    },
-    {
-      icon: "🧑‍💼",
-      label: "Total Sessions",
-      value: loading ? "—" : totalSessions,
-      color: "color-amber",
-    },
-  ];
+  const statCards = useMemo(
+    () => [
+      {
+        icon: "👥",
+        label: "Total Users",
+        value: analytics?.total_users ?? "—",
+        color: "color-indigo",
+      },
+      {
+        icon: "🎯",
+        label: "Total Careers",
+        value: analytics?.total_careers ?? "—",
+        color: "color-violet",
+      },
+      {
+        icon: "📝",
+        label: "Assessments Done",
+        value: analytics?.assessments_completed ?? "—",
+        color: "color-emerald",
+      },
+      {
+        icon: "🧑‍💼",
+        label: "Total Sessions",
+        value: loading ? "—" : totalSessions,
+        color: "color-amber",
+      },
+    ],
+    [analytics, loading, totalSessions],
+  );
 
-  const quickActions = [
-    {
-      icon: "👥",
-      label: "Manage Users",
-      desc: "View & manage user accounts",
-      to: "/admin/users",
-      disabled: false,
-    },
-    {
-      icon: "🎯",
-      label: "Manage Careers",
-      desc: "Add, edit & delete careers",
-      to: "/admin/careers",
-      disabled: false,
-    },
-    {
-      icon: "📋",
-      label: "Assessments",
-      desc: "Edit assessment questions",
-      to: "#",
-      disabled: true,
-    },
-    {
-      icon: "📬",
-      label: "Messages",
-      desc: "View support messages",
-      to: "#",
-      disabled: true,
-    },
-  ];
+  const quickActions = useMemo(
+    () => [
+      {
+        icon: "👥",
+        label: "Manage Users",
+        desc: "View & manage user accounts",
+        to: "/admin/users",
+        disabled: false,
+      },
+      {
+        icon: "🎯",
+        label: "Manage Careers",
+        desc: "Add, edit & delete careers",
+        to: "/admin/careers",
+        disabled: false,
+      },
+      {
+        icon: "📋",
+        label: "Assessments",
+        desc: "Edit assessment questions",
+        to: "#",
+        disabled: true,
+      },
+      {
+        icon: "📬",
+        label: "Messages",
+        desc: "View support messages",
+        to: "#",
+        disabled: true,
+      },
+    ],
+    [],
+  );
 
   const getStatusClass = (status) =>
     `status-${status?.toLowerCase().replace(/\s+/g, "-")}`;

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import "../styles/pages/Dashboard.css";
@@ -5,33 +6,39 @@ import "../styles/pages/Dashboard.css";
 const Dashboard = () => {
   const { user } = useAuth();
 
-  const getWelcomeMessage = () => {
+  const welcomeMessage = useMemo(() => {
     const hour = new Date().getHours();
     if (hour < 12) return "Good Morning";
     if (hour < 18) return "Good Afternoon";
     if (hour < 22) return "Good Evening";
     return "Good Night";
-  };
+  }, []);
 
-  const today = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const today = useMemo(
+    () =>
+      new Date().toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+    [],
+  );
 
-  const dailyTips = [
-    "Success acts as a ladder—you can't climb it with your hands in your pockets.",
-    "The only way to do great work is to love what you do.",
-    "Opportunities don't happen, you create them.",
-    "Your career is a journey, not a destination.",
-    "Networking is not about just connecting people. It's about connecting people with people, people with ideas, and people with opportunities.",
-    "The future belongs to those who believe in the beauty of their dreams.",
-    "Success is not final, failure is not fatal: it is the courage to continue that counts.",
-    "The best way to predict the future is to create it.",
-    "The only limit to our realization of tomorrow will be our doubts of today.",
-  ];
-  const randomTip = dailyTips[Math.floor(Math.random() * dailyTips.length)];
+  const randomTip = useMemo(() => {
+    const dailyTips = [
+      "Success acts as a ladder—you can't climb it with your hands in your pockets.",
+      "The only way to do great work is to love what you do.",
+      "Opportunities don't happen, you create them.",
+      "Your career is a journey, not a destination.",
+      "Networking is not about just connecting people. It's about connecting people with people, people with ideas, and people with opportunities.",
+      "The future belongs to those who believe in the beauty of their dreams.",
+      "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+      "The best way to predict the future is to create it.",
+      "The only limit to our realization of tomorrow will be our doubts of today.",
+    ];
+    return dailyTips[Math.floor(Math.random() * dailyTips.length)];
+  }, []);
 
   return (
     <div className="dashboard-page page-container">
@@ -41,7 +48,7 @@ const Dashboard = () => {
           <div className="header-content">
             <p className="date-display">{today}</p>
             <h1 className="dashboard-welcome">
-              {getWelcomeMessage()},{" "}
+              {welcomeMessage},{" "}
               <span className="highlight-name">
                 {user?.full_name?.split(" ")[0] || "Friend"}
               </span>
