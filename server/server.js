@@ -147,7 +147,7 @@ const startServer = async () => {
     }
 
     await testConnection();
-    await verifyEmailConfig();
+    verifyEmailConfig(); // Run in background to avoid blocking server startup
 
 
     // Only start listening if we're not running on Vercel

@@ -9,27 +9,31 @@ let transporter;
 const getTransporter = () => {
   if (transporter) return transporter;
 
-  // Use service shorthand for Gmail as it's more reliable for defaults
+  const port = parseInt(process.env.EMAIL_PORT) || 587;
+  const isGmail = process.env.EMAIL_HOST === "smtp.gmail.com" || !process.env.EMAIL_HOST;
+
   const config = {
-    service: "gmail",
+    host: process.env.EMAIL_HOST || "smtp.gmail.com",
+    port: port,
+    secure: port === 465, // true for 465, false for 587
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASSWORD,
     },
+    // Add connection timeout (10 seconds)
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
   };
 
-  // If host/port are manually specified in .env, they override the service shorthand
-  if (process.env.EMAIL_HOST && process.env.EMAIL_HOST !== "smtp.gmail.com") {
-    delete config.service;
-    config.host = process.env.EMAIL_HOST;
-    config.port = parseInt(process.env.EMAIL_PORT) || 587;
-    config.secure = config.port === 465;
+  // If using Gmail port 587, we can use the service shorthand
+  if (isGmail && port === 587) {
+    config.service = "gmail";
   }
 
   transporter = nodemailer.createTransport({
     ...config,
     tls: {
-      // Do not fail on invalid certs (common for local dev)
       rejectUnauthorized: false,
     },
   });
