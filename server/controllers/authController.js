@@ -103,6 +103,24 @@ export const login = async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
+    // Auto-promote user to admin if email matches ADMIN_EMAIL env var
+    // This handles cases where the live DB hasn't been manually updated
+    if (
+      process.env.ADMIN_EMAIL &&
+      user.email.toLowerCase() === process.env.ADMIN_EMAIL.toLowerCase() &&
+      !user.is_admin
+    ) {
+      try {
+        await pool.query("UPDATE users SET is_admin = 1 WHERE id = ?", [
+          user.id,
+        ]);
+        user.is_admin = 1; // Update user object for the immediate response
+        console.log(`✅ Auto-promoted ${user.email} to admin`);
+      } catch (err) {
+        console.error("❌ Failed to auto-promote user to admin:", err);
+      }
+    }
+
     res.json({
       message: "Login successful",
       user: {
