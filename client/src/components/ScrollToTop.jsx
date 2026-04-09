@@ -7,7 +7,25 @@ const ScrollToTop = () => {
 
   // Scroll to top on route change
   useEffect(() => {
+    // 1. Immediate standard scroll reset
     window.scrollTo(0, 0);
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+
+    // 2. Lenis specific scroll reset if instance exists
+    if (window.lenis) {
+      window.lenis.scrollTo(0, { immediate: true });
+    }
+
+    // 3. Delayed fallback for complex page transitions
+    const timeoutId = setTimeout(() => {
+      window.scrollTo(0, 0);
+      if (window.lenis) {
+        window.lenis.scrollTo(0, { immediate: true });
+      }
+    }, 50);
+
+    return () => clearTimeout(timeoutId);
   }, [pathname]);
 
   // Toggle visibility based on scroll position

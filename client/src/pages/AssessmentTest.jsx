@@ -117,7 +117,12 @@ const AssessmentTest = () => {
   const handleStart = () => {
     setPhase("test");
     setTimeLeft(120); // Reset timer just in case
+    
+    // Reset scroll to top
     window.scrollTo(0, 0);
+    if (window.lenis) {
+      window.lenis.scrollTo(0, { immediate: true });
+    }
   };
 
   const handleNextStub = () => {

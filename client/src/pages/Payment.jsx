@@ -3,6 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/pages/Payment.css";
 
+// Import local logos
+import googlePayLogo from "../assets/google-pay.png";
+import phonepeLogo from "../assets/phonepe-icon.png";
+import paytmLogo from "../assets/paytm.png";
+
 const Payment = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -185,9 +190,8 @@ const Payment = () => {
                     className={`upi-option ${selectedUpi === "gpay" ? "selected" : ""}`}
                     onClick={() => setSelectedUpi("gpay")}
                   >
-                    {/* Using placeholders or simple text if images break, but keeping existing logic */}
                     <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/512px-Google_Pay_Logo.svg.png"
+                      src={googlePayLogo}
                       alt="GPay"
                       className="upi-icon"
                     />
@@ -198,7 +202,7 @@ const Payment = () => {
                     onClick={() => setSelectedUpi("phonepe")}
                   >
                     <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/PhonePe_Logo.svg/1200px-PhonePe_Logo.svg.png"
+                      src={phonepeLogo}
                       alt="PhonePe"
                       className="upi-icon"
                     />
@@ -209,7 +213,7 @@ const Payment = () => {
                     onClick={() => setSelectedUpi("paytm")}
                   >
                     <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/1200px-Paytm_Logo_%28standalone%29.svg.png"
+                      src={paytmLogo}
                       alt="Paytm"
                       className="upi-icon"
                     />
