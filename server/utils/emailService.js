@@ -1,32 +1,63 @@
-import { Resend } from "resend";
-
-let resend;
+import nodemailer from "nodemailer";
 
 /**
- * Get the Resend client (singleton).
+ * Create a reusable transporter using environment variables.
+ * Uses a singleton pattern to reuse the same connection.
  */
-const getResendClient = () => {
-  if (!resend) {
-    resend = new Resend(process.env.RESEND_API_KEY);
+let transporter;
+
+const getTransporter = () => {
+  if (transporter) return transporter;
+
+  // Use service shorthand for Gmail as it's more reliable for defaults
+  const config = {
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  };
+
+  // If host/port are manually specified in .env, they override the service shorthand
+  if (process.env.EMAIL_HOST && process.env.EMAIL_HOST !== "smtp.gmail.com") {
+    delete config.service;
+    config.host = process.env.EMAIL_HOST;
+    config.port = parseInt(process.env.EMAIL_PORT) || 587;
+    config.secure = config.port === 465;
   }
-  return resend;
+
+  transporter = nodemailer.createTransport({
+    ...config,
+    tls: {
+      // Do not fail on invalid certs (common for local dev)
+      rejectUnauthorized: false,
+    },
+  });
+
+  return transporter;
 };
 
 /**
- * Verifies the email configuration.
- * Called during server startup.
+ * Verifies the email configuration connection.
+ * Should be called during server startup.
  */
 export const verifyEmailConfig = async () => {
-  if (!process.env.RESEND_API_KEY) {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
     console.warn(
-      "⚠️  Email service: Missing RESEND_API_KEY. Notifications are disabled.",
+      "⚠️  Email service: Missing credentials (EMAIL_USER/EMAIL_PASSWORD). Notifications are disabled.",
     );
     return false;
   }
 
-  // Resend doesn't need a connection verify — just check key exists
-  console.log("✅ Email service is ready (Resend API connected)");
-  return true;
+  try {
+    const t = getTransporter();
+    await t.verify();
+    console.log("✅ Email service is ready and connected (Nodemailer)");
+    return true;
+  } catch (error) {
+    console.error("❌ Email service: Connection failed:", error.message);
+    return false;
+  }
 };
 
 /**
@@ -41,23 +72,18 @@ export const sendContactNotification = async ({
   message,
   contactId,
 }) => {
-  if (!process.env.RESEND_API_KEY) {
-    console.warn(
-      "⚠️  Email not configured. Skipping notification. Set RESEND_API_KEY in environment variables.",
-    );
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
     return;
   }
 
-  const adminEmail = process.env.ADMIN_EMAIL || "vasuboss54@gmail.com";
-  // Resend requires a verified domain in the 'from' field.
-  // Using onboarding@resend.dev works without a custom domain on the free plan.
-  const fromEmail = process.env.EMAIL_FROM_RESEND || "onboarding@resend.dev";
+  const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
+  const fromEmail = process.env.EMAIL_FROM || process.env.EMAIL_USER;
 
-  const client = getResendClient();
+  const t = getTransporter();
 
-  const { data, error } = await client.emails.send({
-    from: `CareerGuide Contact <${fromEmail}>`,
-    to: [adminEmail],
+  const mailOptions = {
+    from: `"CareerGuide Contact" <${fromEmail}>`,
+    to: adminEmail,
     subject: `📬 New Contact Message: ${subject}`,
     html: `
       <!DOCTYPE html>
@@ -111,11 +137,79 @@ export const sendContactNotification = async ({
         </body>
       </html>
     `,
-  });
+  };
 
-  if (error) {
-    throw new Error(`Resend API error: ${JSON.stringify(error)}`);
+  const info = await t.sendMail(mailOptions);
+  console.log(`✅ Contact notification email sent: ${info.messageId}`);
+};
+
+/**
+ * Send a confirmation email to the user (Legacy/Optional - disabled in controller)
+ */
+export const sendContactConfirmation = async ({
+  name,
+  email,
+  subject,
+  message,
+}) => {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+    return;
   }
 
-  console.log(`✅ Contact notification email sent: ${data?.id}`);
+  const fromEmail = process.env.EMAIL_FROM || process.env.EMAIL_USER;
+  const t = getTransporter();
+
+  const mailOptions = {
+    from: `"CareerGuide Contact" <${fromEmail}>`,
+    to: email,
+    subject: `✅ We received your message — Career Guide`,
+    html: `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="UTF-8" />
+          <style>
+            body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+            .container { max-width: 600px; margin: 30px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+            .header { background: linear-gradient(135deg, #4f46e5, #7c3aed); padding: 28px 32px; text-align: center; }
+            .header h1 { color: #ffffff; margin: 0; font-size: 24px; }
+            .header p { color: #c7d2fe; margin: 6px 0 0; font-size: 14px; }
+            .body { padding: 32px; }
+            .greeting { font-size: 18px; font-weight: 600; color: #111827; margin-bottom: 12px; }
+            .text { font-size: 15px; color: #374151; line-height: 1.7; margin-bottom: 16px; }
+            .summary-box { background: #f9fafb; border-left: 4px solid #4f46e5; border-radius: 4px; padding: 16px 20px; margin: 24px 0; }
+            .summary-label { font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+            .summary-value { font-size: 14px; color: #111827; margin-bottom: 12px; }
+            .summary-value:last-child { margin-bottom: 0; }
+            .message-preview { background: #ede9fe; border-radius: 4px; padding: 12px 16px; font-size: 14px; color: #4c1d95; white-space: pre-wrap; line-height: 1.6; }
+            .footer { background: #f9fafb; padding: 16px 32px; text-align: center; font-size: 12px; color: #9ca3af; border-top: 1px solid #e5e7eb; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>Message Received!</h1>
+              <p>Thank you for reaching out to Career Guide</p>
+            </div>
+            <div class="body">
+              <div class="greeting">Hi ${name},</div>
+              <p class="text">
+                Thank you for contacting us! We've received your message and our team will get back to you soon.
+              </p>
+              <div class="summary-box">
+                <div class="summary-label">Your Message Preview</div>
+                <div class="message-preview">${message}</div>
+              </div>
+            </div>
+            <div class="footer">
+              &copy; ${new Date().getFullYear()} Career Guide Platform
+            </div>
+          </div>
+        </body>
+      </html>
+    `,
+  };
+
+  const info = await t.sendMail(mailOptions);
+  console.log(`✅ Confirmation email sent to user: ${info.messageId}`);
 };
