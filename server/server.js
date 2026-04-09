@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { pool, testConnection } from "./config/db.js";
 import { validateEnv } from "./utils/validateEnv.js";
+import { verifyEmailConfig } from "./utils/emailService.js";
 
 // Route imports
 import authRoutes from "./routes/authRoutes.js";
@@ -146,6 +147,8 @@ const startServer = async () => {
     }
 
     await testConnection();
+    await verifyEmailConfig();
+
 
     // Only start listening if we're not running on Vercel
     if (!process.env.VERCEL) {

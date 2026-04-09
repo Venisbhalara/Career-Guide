@@ -61,7 +61,9 @@ export const submitContact = async (req, res) => {
       );
     });
 
-    // Send confirmation email to the user (non-blocking)
+    // NOTE: sendContactConfirmation is disabled per user request to avoid duplicate emails during testing
+    // and focus on the main notification email.
+    /*
     sendContactConfirmation({ name, email, subject, message }).catch(
       (emailErr) => {
         console.error(
@@ -70,6 +72,8 @@ export const submitContact = async (req, res) => {
         );
       },
     );
+    */
+
 
     res.status(201).json({
       success: true,

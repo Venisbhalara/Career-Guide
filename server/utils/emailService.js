@@ -4,17 +4,66 @@ import nodemailer from "nodemailer";
  * Create a reusable transporter using environment variables.
  * Supports Gmail (and other SMTP providers).
  */
-const createTransporter = () => {
-  return nodemailer.createTransport({
-    host: process.env.EMAIL_HOST || "smtp.gmail.com",
-    port: parseInt(process.env.EMAIL_PORT) || 587,
-    secure: false, // true for 465, false for other ports
+let transporter;
+
+/**
+ * Initialize and get the email transporter.
+ * Uses a singleton pattern to reuse the same connection.
+ */
+const getTransporter = () => {
+  if (transporter) return transporter;
+
+  // Use service shorthand for Gmail as it's more reliable for defaults
+  const config = {
+    service: "gmail",
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASSWORD,
     },
+  };
+
+  // If host/port are manually specified in .env, they override the service shorthand
+  if (process.env.EMAIL_HOST && process.env.EMAIL_HOST !== "smtp.gmail.com") {
+    delete config.service;
+    config.host = process.env.EMAIL_HOST;
+    config.port = parseInt(process.env.EMAIL_PORT) || 587;
+    config.secure = config.port === 465;
+  }
+
+  transporter = nodemailer.createTransport({
+    ...config,
+    tls: {
+      // Do not fail on invalid certs (common for local dev)
+      rejectUnauthorized: false,
+    },
   });
+
+  return transporter;
 };
+
+/**
+ * Verifies the email configuration connection.
+ * Should be called during server startup.
+ */
+export const verifyEmailConfig = async () => {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+    console.warn(
+      "⚠️  Email service: Missing credentials (EMAIL_USER/EMAIL_PASSWORD). Notifications are disabled.",
+    );
+    return false;
+  }
+
+  try {
+    const t = getTransporter();
+    await t.verify();
+    console.log("✅ Email service is ready and connected");
+    return true;
+  } catch (error) {
+    console.error("❌ Email service: Connection failed:", error.message);
+    return false;
+  }
+};
+
 
 /**
  * Send an email notification to the admin when a new contact message is submitted.
@@ -39,7 +88,7 @@ export const sendContactNotification = async ({
   const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
   const fromEmail = process.env.EMAIL_FROM || process.env.EMAIL_USER;
 
-  const transporter = createTransporter();
+  const transporter = getTransporter();
 
   const mailOptions = {
     from: `"CareerGuideContact" <${fromEmail}>`,
@@ -120,7 +169,7 @@ export const sendContactConfirmation = async ({
   }
 
   const fromEmail = process.env.EMAIL_FROM || process.env.EMAIL_USER;
-  const transporter = createTransporter();
+  const transporter = getTransporter();
 
   const mailOptions = {
     from: `"CareerGuideContact" <${fromEmail}>`,
