@@ -134,7 +134,9 @@ const startServer = async () => {
     // Initialize/Sync Database
     // Skip this on Vercel to reduce cold start times, as the database should already be set up
     if (process.env.VERCEL) {
-      console.log("⚡ Vercel environment detected. Skipping automatic database setup.");
+      console.log(
+        "⚡ Vercel environment detected. Skipping automatic database setup.",
+      );
     } else {
       const setupSuccess = await setupDatabase();
       if (!setupSuccess) {
@@ -148,7 +150,6 @@ const startServer = async () => {
 
     await testConnection();
     verifyEmailConfig(); // Run in background to avoid blocking server startup
-
 
     // Only start listening if we're not running on Vercel
     if (!process.env.VERCEL) {

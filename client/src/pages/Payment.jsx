@@ -190,33 +190,21 @@ const Payment = () => {
                     className={`upi-option ${selectedUpi === "gpay" ? "selected" : ""}`}
                     onClick={() => setSelectedUpi("gpay")}
                   >
-                    <img
-                      src={googlePayLogo}
-                      alt="GPay"
-                      className="upi-icon"
-                    />
+                    <img src={googlePayLogo} alt="GPay" className="upi-icon" />
                     <span className="upi-name">Google Pay</span>
                   </div>
                   <div
                     className={`upi-option ${selectedUpi === "phonepe" ? "selected" : ""}`}
                     onClick={() => setSelectedUpi("phonepe")}
                   >
-                    <img
-                      src={phonepeLogo}
-                      alt="PhonePe"
-                      className="upi-icon"
-                    />
+                    <img src={phonepeLogo} alt="PhonePe" className="upi-icon" />
                     <span className="upi-name">PhonePe</span>
                   </div>
                   <div
                     className={`upi-option ${selectedUpi === "paytm" ? "selected" : ""}`}
                     onClick={() => setSelectedUpi("paytm")}
                   >
-                    <img
-                      src={paytmLogo}
-                      alt="Paytm"
-                      className="upi-icon"
-                    />
+                    <img src={paytmLogo} alt="Paytm" className="upi-icon" />
                     <span className="upi-name">Paytm</span>
                   </div>
                 </div>
